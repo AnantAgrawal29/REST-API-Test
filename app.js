@@ -1,11 +1,15 @@
 const express = require("express");
 const app = express();
-
-app.get("/quote", function (req, res, next) {
-  res.json({
-    quote:
-      "As you dive deeper in web development, web development will dive deeper into you!",
+const db = require("./data/database");
+const quoteRoutes = require("./routes/quote.routes");
+app.use(quoteRoutes);
+app.use(function (error, req, res, next) {
+  res.status(500).json({
+    message: "Something went wrong",
   });
 });
-
-app.listen(3000);
+db.initDb()
+  .then(() => {
+    app.listen(3000);
+  })
+  .catch((err) => console.error(err));
