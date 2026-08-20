@@ -2,9 +2,13 @@ const express = require("express");
 
 const db = require("./data/database");
 const todoRoutes = require("./routes/todo.routes");
+const enableCORS = require("./middlewares/cors");
 const app = express();
 
+app.use(enableCORS);
 app.use(express.json());
+// Apply CORS globally to all routes
+
 app.use("/todos", todoRoutes);
 app.use(function (error, req, res, next) {
   res.status(500).json({
